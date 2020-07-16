@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ListaItens from './componentes/ListaItens';
 import InclusaoItens from './componentes/InclusaoItens';
 import Home from './componentes/Home';
+import NovoPedido from './componentes/NovoPedido';
 
 const Stack = createStackNavigator();
 
-function App() {
+export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -15,7 +16,11 @@ function App() {
           name="Home"
           component={Home}
           options={{
-            title: 'Pedidos'
+            title: 'Pedidos',
+            headerRight: () => (
+              <NovoPedido />
+            )
+           
           }} />
         <Stack.Screen
           name="InclusaoItens"
@@ -36,5 +41,3 @@ function App() {
     </NavigationContainer>
   );
 }
-
-export default App;
