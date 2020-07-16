@@ -1,19 +1,40 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import ListaItens from './componentes/ListaItens';
+import InclusaoItens from './componentes/InclusaoItens';
+import Home from './componentes/Home';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            title: 'Pedidos'
+          }} />
+        <Stack.Screen
+          name="InclusaoItens"
+          component={InclusaoItens}
+          options={{
+            title: 'Inclusão de itens',
+            headerBackTitleVisible: false
+          }} />
+        <Stack.Screen
+          name="ListaItens"
+          component={ListaItens}
+          options={{
+            title: 'Itens lançados',
+            headerBackTitleVisible: false
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
