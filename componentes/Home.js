@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FlatList, SafeAreaView, StatusBar, Alert, StyleSheet } from 'react-native';
 import Pedido from './Pedido';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import pedidosApi from '../api/PedidoGetService';
+import { get } from '../api/PedidoService';
 
 const pedidos = [
     {
@@ -18,7 +18,7 @@ export default function Home({ navigation }) {
     const [pedidos, setPedidos] = React.useState([]);
 
     React.useEffect(() => {
-        pedidosApi(setPedidos);
+        get(setPedidos);
     }, []);
 
     return (

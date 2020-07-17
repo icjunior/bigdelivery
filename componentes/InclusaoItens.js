@@ -1,25 +1,32 @@
 import * as React from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
-import pedidoService from '../api/PedidoService';
+import { View, Text, TextInput, Button } from 'react-native';
+import { post } from '../api/PedidoService';
+import AsyncStorage from '@react-native-community/async-storage';
+import { codigoLojaConfig } from '../services/Configuracao';
 
 export default function InclusaoItens({ navigation }) {
 
     const [itens, setItens] = React.useState([]);
     const [material, setMaterial] = React.useState('');
     const [quantidade, setQuantidade] = React.useState(0);
+    const [codigoLoja, setCodigoLoja] = React.useState();
+    const [codPedidoItem, setCodPedidoItem] = React.useState(1);
 
-    function gravarMaterial() {
+    React.useEffect(() => {
+        codigoLojaConfig().then(loja => { setCodigoLoja(loja) });
+    }, []);
+
+    gravarMaterial = () => {
         const lancamento =
         {
-            codLoja: 13,
-            codPedido: 15,
-            codPedidoItem: 2,
+            codLoja: codigoLoja,
+            codPedidoItem: codPedidoItem,
             codMercadoria: material,
-            precoUnitario: 15.00,
             quantidade: quantidade,
             valorDesconto: 0.00
         }
         setItens([...itens, lancamento]);
+        setCodPedidoItem(codPedidoItem + 1);
     }
 
     return (
@@ -27,24 +34,22 @@ export default function InclusaoItens({ navigation }) {
             <View style={{ margin: 10 }}>
                 <Text style={{ fontSize: 20 }}>Quantidade:</Text>
                 <TextInput
-                    placeholder='Digite'
+                    placeholder='quantidade'
                     style={{ fontSize: 50 }}
-                    onChangeText={quantidade => setQuantidade(quantidade)}></TextInput>
+                    onChangeText={quantidade => setQuantidade(quantidade)} />
             </View>
             <View style={{ margin: 10 }}>
                 <Text style={{ fontSize: 20 }}>Material:</Text>
                 <TextInput
-                    placeholder="Digite"
+                    placeholder="material"
                     style={{ fontSize: 50 }}
-                    onChangeText={material => setMaterial(material)}></TextInput>
+                    onChangeText={material => setMaterial(material)} />
             </View>
-            <Button title="Gravar" onPress={() => gravarMaterial()}></Button>
+            <Button title="Gravar" onPress={() => gravarMaterial()} />
 
-            <Button title="Finalizar" onPress={() => pedidoService(itens)}></Button>
+            {/* <Button title="Finalizar" onPress={() => post(itens, codigoLoja)}></Button>
 
-            <Button title="Finalizar" onPress={() => { navigation.navigate('ListaItens', { itens: itens }) }}></Button>
-
-            <Button title="Finalizar" onPress={() => { Alert.alert('', 'Teste') }}></Button>
+            <Button title="Finalizar" onPress={() => { navigation.navigate('ListaItens', { itens: itens }) }}></Button> */}
         </View >
     );
 }
