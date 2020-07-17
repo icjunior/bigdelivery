@@ -35,7 +35,9 @@ export default function App() {
             title: 'Inclusão de itens',
             headerBackTitleVisible: false,
             headerRight: () => (
-              <BtnProximo />
+              <View style={{ flexDirection: "row" }}>
+                <BtnProximo />
+              </View>
             )
           }} />
         <Stack.Screen

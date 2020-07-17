@@ -3,11 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function NovoPedido(props) {
+export default function NovoPedido() {
     const navigation = useNavigation();
 
     return (
-        <TouchableOpacity onPress={() => { navigation.navigate('ListaItens', { itens: props.itens }) }}>
+        <TouchableOpacity onPress={() => { navigation.navigate('InclusaoItens') }}>
             <MaterialIcons name="queue-play-next" size={24} color="blue" style={{ paddingRight: 10 }} />
         </TouchableOpacity>
     );

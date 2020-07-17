@@ -4,22 +4,13 @@ export const post = async (itens, codigoLoja) => {
     console.warn(codigoLoja);
 
     const dadosBasicos = {
-        //dataEntrega: "2020-06-19T00:00:00",
         numItensPedido: itens.length,
         valorAcrescimo: 0.00,
         codLoja: codigoLoja,
-        //valorPedido: 150.00,
-        //dataPedido: "2020-06-19T00:00:00",
-        //dataCadastro: "2020-06-19T00:00:00",
-        //dataUltimaAlteracao: "2020-06-19T00:00:00",
         codLojaSaidaMercadoria: codigoLoja,
-        //codFuncionarioLiberador: 60,
-        //situacao: 2,
-        //codVendedor: 60,
-        //flgTipoCobrancaFrete: 0,
         itens: itens
     }
-    
+
     const requestInfo = {
         method: 'POST',
         headers: {

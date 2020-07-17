@@ -1,32 +1,31 @@
 import * as React from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { post } from '../api/PedidoService';
-import AsyncStorage from '@react-native-community/async-storage';
 import { codigoLojaConfig } from '../services/Configuracao';
+import BtnProximo from './menu/BtnProximo';
+import { montaMaterial } from '../services/ItemService';
 
 export default function InclusaoItens({ navigation }) {
+    navigation.setOptions({
+        headerRight: () => (
+            <BtnProximo itens={itens} />
+        )
+    })
 
     const [itens, setItens] = React.useState([]);
     const [material, setMaterial] = React.useState('');
-    const [quantidade, setQuantidade] = React.useState(0);
-    const [codigoLoja, setCodigoLoja] = React.useState();
+    const [quantidade, setQuantidade] = React.useState('');
+    const [codigoLoja, setCodigoLoja] = React.useState(0);
     const [codPedidoItem, setCodPedidoItem] = React.useState(1);
 
     React.useEffect(() => {
         codigoLojaConfig().then(loja => { setCodigoLoja(loja) });
     }, []);
 
-    gravarMaterial = () => {
-        const lancamento =
-        {
-            codLoja: codigoLoja,
-            codPedidoItem: codPedidoItem,
-            codMercadoria: material,
-            quantidade: quantidade,
-            valorDesconto: 0.00
-        }
-        setItens([...itens, lancamento]);
+    gravar = () => {
+        setItens([...itens, montaMaterial(codigoLoja, codPedidoItem, material, quantidade)]);
         setCodPedidoItem(codPedidoItem + 1);
+        setQuantidade('');
+        setMaterial('');
     }
 
     return (
@@ -36,20 +35,22 @@ export default function InclusaoItens({ navigation }) {
                 <TextInput
                     placeholder='quantidade'
                     style={{ fontSize: 50 }}
-                    onChangeText={quantidade => setQuantidade(quantidade)} />
+                    onChangeText={quantidade => setQuantidade(quantidade)}
+                    value={quantidade.toString()}
+                />
             </View>
             <View style={{ margin: 10 }}>
                 <Text style={{ fontSize: 20 }}>Material:</Text>
                 <TextInput
                     placeholder="material"
                     style={{ fontSize: 50 }}
-                    onChangeText={material => setMaterial(material)} />
+                    onChangeText={material => setMaterial(material)}
+                    value={material.toString()}
+                />
             </View>
-            <Button title="Gravar" onPress={() => gravarMaterial()} />
-
-            {/* <Button title="Finalizar" onPress={() => post(itens, codigoLoja)}></Button>
-
-            <Button title="Finalizar" onPress={() => { navigation.navigate('ListaItens', { itens: itens }) }}></Button> */}
+            <Button title="Gravar" onPress={() => {
+                gravar();
+            }} />
         </View >
     );
 }
