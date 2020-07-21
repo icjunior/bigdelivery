@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { codigoLojaConfig } from '../services/Configuracao';
 import BtnProximo from './menu/BtnProximo';
 import { montaMaterial } from '../services/ItemService';
@@ -7,7 +7,7 @@ import { montaMaterial } from '../services/ItemService';
 export default function InclusaoItens({ navigation }) {
     navigation.setOptions({
         headerRight: () => (
-            <BtnProximo itens={itens} />
+            <BtnProximo itens={itens} codigoLoja={codigoLoja} />
         )
     })
 
@@ -37,6 +37,7 @@ export default function InclusaoItens({ navigation }) {
                     style={{ fontSize: 50 }}
                     onChangeText={quantidade => setQuantidade(quantidade)}
                     value={quantidade.toString()}
+                    autoFocus={true}
                 />
             </View>
             <View style={{ margin: 10 }}>
@@ -49,6 +50,10 @@ export default function InclusaoItens({ navigation }) {
                 />
             </View>
             <Button title="Gravar" onPress={() => {
+                if (material == '' || quantidade == '') {
+                    Alert.alert('', 'Campos obrigatórios não preenchidos. Tente novamente');
+                    return;
+                }
                 gravar();
             }} />
         </View >

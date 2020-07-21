@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, Alert } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ListaItens from './componentes/ListaItens';
 import InclusaoItens from './componentes/InclusaoItens';
@@ -9,6 +9,7 @@ import Configuracoes from './componentes/Configuracoes';
 import BtnNovoPedido from './componentes/menu/BtnNovoPedido';
 import BtnProximo from './componentes/menu/BtnProximo';
 import BtnConfiguracoes from './componentes/menu/BtnConfiguracoes';
+import BtnVoltar from './componentes/menu/BtnVoltar';
 
 const Stack = createStackNavigator();
 
@@ -32,14 +33,18 @@ export default function App() {
           name="InclusaoItens"
           component={InclusaoItens}
           options={{
-            title: 'Inclusão de itens',
+            title: '',
             headerBackTitleVisible: false,
             headerRight: () => (
               <View style={{ flexDirection: "row" }}>
                 <BtnProximo />
               </View>
+            ),
+            headerLeft: () => (
+              <BtnVoltar />
             )
-          }} />
+          }}
+        />
         <Stack.Screen
           name="ListaItens"
           component={ListaItens}

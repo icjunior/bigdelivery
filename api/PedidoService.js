@@ -1,8 +1,6 @@
 export const post = async (itens, codigoLoja) => {
     const uri = "http://localhost:8080/api/pedido";
 
-    console.warn(codigoLoja);
-
     const dadosBasicos = {
         numItensPedido: itens.length,
         valorAcrescimo: 0.00,

@@ -7,7 +7,10 @@ export default function BtnConfiguracoes() {
     const navigation = useNavigation();
 
     return (
-        <TouchableOpacity onPress={() => { navigation.navigate('Configuracoes') }}>
+        <TouchableOpacity onPress={() => {
+            navigation.navigate('Configuracoes')
+        }
+        }>
             <AntDesign name="setting" size={24} color="blue" style={{ paddingRight: 10 }} />
         </TouchableOpacity>
     );

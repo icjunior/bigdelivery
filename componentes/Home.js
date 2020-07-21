@@ -15,11 +15,11 @@ const pedidos = [
 
 export default function Home({ navigation }) {
 
-    const [pedidos, setPedidos] = React.useState([]);
+    //const [pedidos, setPedidos] = React.useState([]);
 
-    React.useEffect(() => {
-        get(setPedidos);
-    }, []);
+    // React.useEffect(() => {
+    //     get(setPedidos);
+    // }, []);
 
     return (
         <SafeAreaView style={estilo.container}>

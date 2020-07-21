@@ -33,5 +33,8 @@ const estilo = StyleSheet.create({
     },
     containerCampos: {
         flex: 1
+    },
+    containerCampoData: {
+        flexGrow: 1
     }
 })

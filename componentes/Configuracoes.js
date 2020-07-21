@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function Configuracoes({ navigation }) {
@@ -18,12 +18,12 @@ export default function Configuracoes({ navigation }) {
     }
 
     gravarConfiguracao = async () => {
-        console.warn(codigoLoja);
         try {
             await AsyncStorage.setItem('codigoLoja', codigoLoja);
         } catch (e) {
             console.warn(e);
         }
+        Alert.alert('', 'Configuração salva com sucesso');
         navigation.goBack();
     }
 
