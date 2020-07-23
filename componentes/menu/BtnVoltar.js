@@ -22,7 +22,7 @@ export default function BtnConfiguracoes() {
                     }
                 ])
         }}>
-            <AntDesign name="left" size={24} color="blue" />
+            <AntDesign name="left" size={24} color="#FFFFFF" />
         </TouchableOpacity>
     )
 }

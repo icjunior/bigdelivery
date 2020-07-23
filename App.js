@@ -27,7 +27,9 @@ export default function App() {
                 <BtnConfiguracoes />
                 <BtnNovoPedido />
               </View>
-            )
+            ),
+            headerStyle: { backgroundColor: 'red' },
+            headerTitleStyle: { color: '#FFFFFF' }
           }} />
         <Stack.Screen
           name="InclusaoItens"
@@ -42,7 +44,9 @@ export default function App() {
             ),
             headerLeft: () => (
               <BtnVoltar />
-            )
+            ),
+            headerStyle: { backgroundColor: 'red' },
+            headerTitleStyle: { color: '#FFFFFF' }
           }}
         />
         <Stack.Screen
@@ -50,7 +54,10 @@ export default function App() {
           component={ListaItens}
           options={{
             title: 'Itens lançados',
-            headerBackTitleVisible: false
+            headerBackTitleVisible: false,
+            headerStyle: { backgroundColor: 'red' },
+            headerTitleStyle: { color: '#FFFFFF' },
+            headerBackTitleStyle: { color: '#FFFFFF' }
           }}
         />
         <Stack.Screen
@@ -58,7 +65,9 @@ export default function App() {
           component={Configuracoes}
           options={{
             title: 'Configurações gerais',
-            headerBackTitleVisible: false
+            headerBackTitleVisible: false,
+            headerStyle: { backgroundColor: 'red' },
+            headerTitleStyle: { color: '#FFFFFF' }
           }}
         />
       </Stack.Navigator>

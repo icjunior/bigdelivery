@@ -7,7 +7,7 @@ export default function NovoPedido() {
     const navigation = useNavigation();
     return (
         <TouchableOpacity onPress={() => { navigation.navigate('InclusaoItens') }}>
-            <MaterialIcons name="add-circle" size={24} color="blue" style={{paddingRight: 10}} />
+            <MaterialIcons name="add-circle" size={24} color="#FFFFFF" style={{paddingRight: 10}} />
         </TouchableOpacity>
     );
 }

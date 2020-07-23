@@ -38,6 +38,7 @@ export default function InclusaoItens({ navigation }) {
                     onChangeText={quantidade => setQuantidade(quantidade)}
                     value={quantidade.toString()}
                     autoFocus={true}
+                    keyboardType="decimal-pad"
                 />
             </View>
             <View style={{ margin: 10 }}>

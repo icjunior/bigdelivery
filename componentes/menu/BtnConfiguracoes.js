@@ -11,7 +11,7 @@ export default function BtnConfiguracoes() {
             navigation.navigate('Configuracoes')
         }
         }>
-            <AntDesign name="setting" size={24} color="blue" style={{ paddingRight: 10 }} />
+            <AntDesign name="setting" size={24} color="#FFFFFF" style={{ paddingRight: 10 }} />
         </TouchableOpacity>
     );
 }

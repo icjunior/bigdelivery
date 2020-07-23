@@ -8,7 +8,7 @@ export default function NovoPedido() {
 
     return (
         <TouchableOpacity onPress={() => { navigation.navigate('InclusaoItens') }}>
-            <MaterialIcons name="queue-play-next" size={24} color="blue" style={{ paddingRight: 10 }} />
+            <MaterialIcons name="queue-play-next" size={24} color="#FFFFFF" style={{ paddingRight: 10 }} />
         </TouchableOpacity>
     );
 }

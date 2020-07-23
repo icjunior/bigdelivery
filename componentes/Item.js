@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Item(props) {
     return (
-        <View style={estilo.container}>
+        <View style={{ flexDirection: "row" }}>
             <View style={estilo.containerCampos}>
                 <Text style={estilo.titulo}>Mercadoria</Text>
                 <Text style={estilo.variavel}>{props.item.codMercadoria}</Text>
@@ -13,11 +13,6 @@ export default function Item(props) {
             <View style={estilo.containerCampos}>
                 <Text style={estilo.titulo}>Quantidade</Text>
                 <Text style={estilo.variavel}>{props.item.quantidade}</Text>
-            </View>
-            <View style={estilo.containerBotao}>
-                <TouchableOpacity onPress={() => console.warn('vou apagar')}>
-                    <MaterialCommunityIcons name="trash-can-outline" size={24} color="black" />
-                </TouchableOpacity>
             </View>
         </View>
     );

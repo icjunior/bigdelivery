@@ -8,7 +8,7 @@ export default function BtnGravarConfig() {
 
     return (
         <TouchableOpacity onPress={() => { navigation.goBack() }}>
-            <FontAwesome name="save" size={24} color="blue" style={{ paddingRight: 10 }} />
+            <FontAwesome name="save" size={24} color="#FFFFFF" style={{ paddingRight: 10 }} />
         </TouchableOpacity>
     );
 }

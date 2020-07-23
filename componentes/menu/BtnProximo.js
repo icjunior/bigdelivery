@@ -15,7 +15,7 @@ export default function NovoPedido(props) {
             }
             navigation.navigate('ListaItens', { itens: props.itens, codigoLoja: props.codigoLoja })
         }}>
-            <MaterialIcons name="queue-play-next" size={24} color="blue" style={{ paddingRight: 10 }} />
+            <MaterialIcons name="queue-play-next" size={24} color="#FFFFFF" style={{ paddingRight: 10 }} />
         </TouchableOpacity>
     );
 }
