@@ -1,5 +1,7 @@
-export const post = async (itens, codigoLoja) => {
-    const uri = "http://localhost:8080/api/pedido";
+import { Alert } from 'react-native';
+
+export const post = async (itens, codigoLoja, enderecoApi) => {
+    let uri = `${enderecoApi}/pedido`;
 
     const dadosBasicos = {
         numItensPedido: itens.length,
@@ -22,12 +24,12 @@ export const post = async (itens, codigoLoja) => {
     if (resposta.ok) {
         return resposta.json();
     } else {
-        throw new Error("Não foi possível gerar pedido");
+        Alert.alert('Finalização', 'Não foi possível finalizar o pedido');
     }
 }
 
-export const get = async () => {
-    const uri = "http://localhost:8080/api/pedido";
+export const get = async (enderecoApi) => {
+    let uri = `${enderecoApi}/pedido`;
 
     const requestInfo = {
         method: 'GET',
@@ -41,6 +43,6 @@ export const get = async () => {
     if (resposta.ok) {
         return resposta.json();
     } else {
-        throw new Error("Não foi possível obter lista de pedidos");
+        Alert.alert('Pedidos', 'Não foi recuperar a lista de pedidos');
     }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
+import { SafeAreaView, FlatList, StyleSheet, View, Alert, AsyncStorage, ActivityIndicator } from 'react-native';
 import Item from './Item';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,10 +9,21 @@ export default function ListaItens({ route, navigation }) {
     const { itens } = route.params;
     const { codigoLoja } = route.params;
     const [refresh, setRefresh] = React.useState();
+    const [enderecoApi, setEnderecoApi] = React.useState('');
+
+    React.useEffect(() => {
+        recuperaConfiguracao();
+    }, [])
+
+    recuperaConfiguracao = async () => {
+        return await AsyncStorage
+            .getItem('enderecoApi')
+            .then((endereco) => setEnderecoApi(endereco));
+    }
 
     navigation.setOptions({
         headerRight: () => (
-            <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} />
+            <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} enderecoApi={enderecoApi} />
         )
     })
 
@@ -30,7 +41,18 @@ export default function ListaItens({ route, navigation }) {
                         <Item item={item} />
                         <View style={styles.containerBotao}>
                             <TouchableOpacity onPress={() => {
-                                excluirItem(item);
+                                Alert.alert('Excluir item',
+                                    `Tem certeza que deseja excluir o item ${item.codMercadoria}?`,
+                                    [
+                                        {
+                                            text: "Sim",
+                                            onPress: () => { excluirItem(item); }
+                                        },
+                                        {
+                                            text: "Não",
+                                            onPress: () => { return }
+                                        }
+                                    ])
                             }}>
                                 <MaterialCommunityIcons name="trash-can-outline" size={24} color="black" />
                             </TouchableOpacity>
@@ -67,6 +89,7 @@ const styles = StyleSheet.create({
     },
     containerBotao: {
         justifyContent: "center",
-        alignContent: "center"
+        alignContent: "center",
+        marginRight: 5
     }
 });

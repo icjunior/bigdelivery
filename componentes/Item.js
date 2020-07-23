@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Item(props) {
     return (
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             <View style={estilo.containerCampos}>
                 <Text style={estilo.titulo}>Mercadoria</Text>
                 <Text style={estilo.variavel}>{props.item.codMercadoria}</Text>

@@ -6,11 +6,11 @@ export default function Pedido(props) {
         <View style={estilo.container}>
             <View style={estilo.containerCampos}>
                 <Text style={estilo.titulo}>Pedido</Text>
-                <Text style={estilo.variavel}>{props.pedido.codigo}</Text>
+                <Text style={estilo.variavel}>{props.pedido.codPedido}</Text>
             </View>
             <View style={estilo.containerCampos}>
                 <Text style={estilo.titulo}>Valor</Text>
-                <Text style={estilo.variavel}>{props.pedido.valorTotal}</Text>
+                <Text style={estilo.variavel}>{props.pedido.valorPedido}</Text>
             </View>
         </View>
     );
