@@ -4,7 +4,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { post } from '../../api/PedidoService';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ModalJs from '../modal/ModalJs';
 
 export default function BtnConfiguracoes(props) {
     const navigation = useNavigation();
