@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function Configuracoes({ navigation }) {
-    let [codigoLoja, setCodigoLoja] = React.useState(0);
+    let [codigoLoja, setCodigoLoja] = React.useState('');
     let [enderecoApi, setEnderecoApi] = React.useState('');
 
     React.useEffect(() => {
@@ -38,7 +38,7 @@ export default function Configuracoes({ navigation }) {
                     placeholder='Loja'
                     style={{ fontSize: 50 }}
                     onChangeText={(texto) => setCodigoLoja(texto)}
-                    value={codigoLoja.toString()}
+                    value={codigoLoja}
                 />
                 <Text>Endereço da api</Text>
                 <TextInput

@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { codigoLojaConfig } from '../services/Configuracao';
 import BtnProximo from './menu/BtnProximo';
 import { montaMaterial } from '../services/ItemService';
+import { validaEAN } from '../function/ValidaEAN';
 
 export default function InclusaoItens({ navigation }) {
     navigation.setOptions({
@@ -28,8 +29,32 @@ export default function InclusaoItens({ navigation }) {
         setMaterial('');
     }
 
+    converteProdutoPesado = (produtoZanthus) => {
+        valor = material.substring(7, 12) / 100;
+        quantidadeCalculada = valor / produtoZanthus.precoUnitario;
+        setMaterial(material.substring(1, 7));
+        setQuantidade(quantidadeCalculada.toFixed(3));
+    }
+
     return (
         <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+            <View style={{ margin: 10 }}>
+                <Text style={{ fontSize: 20 }}>Material:</Text>
+                <TextInput
+                    placeholder="material"
+                    style={{ fontSize: 50 }}
+                    onChangeText={material => { setMaterial(material) }}
+                    onBlur={() => {
+                        if (material.length == 13 && material.startsWith("2")) {
+                            validaEAN(2, material).then((resposta) => {
+                                converteProdutoPesado(resposta);
+                            });
+                        }
+                    }}
+                    value={material.toString()}
+                    keyboardType="numeric"
+                />
+            </View>
             <View style={{ margin: 10 }}>
                 <Text style={{ fontSize: 20 }}>Quantidade:</Text>
                 <TextInput
@@ -39,15 +64,6 @@ export default function InclusaoItens({ navigation }) {
                     value={quantidade.toString()}
                     autoFocus={true}
                     keyboardType="decimal-pad"
-                />
-            </View>
-            <View style={{ margin: 10 }}>
-                <Text style={{ fontSize: 20 }}>Material:</Text>
-                <TextInput
-                    placeholder="material"
-                    style={{ fontSize: 50 }}
-                    onChangeText={material => setMaterial(material)}
-                    value={material.toString()}
                 />
             </View>
             <Button title="Gravar" onPress={() => {
