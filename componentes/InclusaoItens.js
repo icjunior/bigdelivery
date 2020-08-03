@@ -27,8 +27,7 @@ export default function InclusaoItens({ navigation }) {
     gravar = () => {
         getMercadoria(null, 2, material)
             .then((resposta) => {
-                setDescricao(resposta.descricao);
-                setItens([...itens, montaMaterial(codigoLoja, codPedidoItem, material, quantidade, descricao)]);
+                setItens([...itens, montaMaterial(codigoLoja, codPedidoItem, material, quantidade, resposta.descricao)]);
                 setCodPedidoItem(codPedidoItem + 1);
                 setQuantidade('');
                 setMaterial('');

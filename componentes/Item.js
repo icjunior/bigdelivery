@@ -10,7 +10,7 @@ export default function Item(props) {
             </View>
             <View style={estilo.containerCampos}>
                 <Text style={estilo.titulo}>Descrição</Text>
-                <Text style={estilo.variavel}>{props.item.descricao}</Text>
+                <Text style={{fontSize: 16}}>{props.item.descricao}</Text>
             </View>
             <View style={estilo.containerCampos}>
                 <Text style={estilo.titulo}>Quantidade</Text>
