@@ -4,6 +4,7 @@ import { codigoLojaConfig } from '../services/Configuracao';
 import BtnProximo from './menu/BtnProximo';
 import { montaMaterial } from '../services/ItemService';
 import { validaEAN } from '../function/ValidaEAN';
+import { getMercadoria } from '../api/MercadoriaService';
 
 export default function InclusaoItens({ navigation }) {
     navigation.setOptions({
@@ -14,6 +15,7 @@ export default function InclusaoItens({ navigation }) {
 
     const [itens, setItens] = React.useState([]);
     const [material, setMaterial] = React.useState('');
+    const [descricao, setDescricao] = React.useState('');
     const [quantidade, setQuantidade] = React.useState('');
     const [codigoLoja, setCodigoLoja] = React.useState(0);
     const [codPedidoItem, setCodPedidoItem] = React.useState(1);
@@ -23,10 +25,15 @@ export default function InclusaoItens({ navigation }) {
     }, []);
 
     gravar = () => {
-        setItens([...itens, montaMaterial(codigoLoja, codPedidoItem, material, quantidade)]);
-        setCodPedidoItem(codPedidoItem + 1);
-        setQuantidade('');
-        setMaterial('');
+        getMercadoria(null, 2, material)
+            .then((resposta) => {
+                setDescricao(resposta.descricao);
+                setItens([...itens, montaMaterial(codigoLoja, codPedidoItem, material, quantidade, descricao)]);
+                setCodPedidoItem(codPedidoItem + 1);
+                setQuantidade('');
+                setMaterial('');
+            })
+            .catch((erro) => Alert.alert('Pesquisa de produto', `O produto ${material} não possui cadastro no Zanthus`));
     }
 
     converteProdutoPesado = (produtoZanthus) => {

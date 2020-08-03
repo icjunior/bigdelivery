@@ -3,15 +3,13 @@ import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import Pedido from './Pedido';
 import { get } from '../api/PedidoService';
 import AsyncStorage from '@react-native-community/async-storage';
-import { getMercadoria } from '../api/MercadoriaService';
 
-export default function Home({ navigation }) {
+export default function Home() {
 
     const [pedidos, setPedidos] = React.useState([]);
 
     React.useEffect(() => {
         recuperaConfiguracao();
-        // buscarItens();
     }, []);
 
     recuperaConfiguracao = async () => {
@@ -19,14 +17,6 @@ export default function Home({ navigation }) {
             .getItem('enderecoApi')
             .then((endereco) => get(endereco).then((lista) => setPedidos(lista)));
     }
-
-    // buscarItens = async () => {
-    //     return await AsyncStorage
-    //         .getItem('enderecoApi')
-    //         .then((endereco) => getMercadoria(endereco, 2)
-    //             .then(async (lista) => await AsyncStorage.setItem('mercadorias', lista))
-    //         );
-    // }
 
     return (
         <SafeAreaView style={estilo.container}>
