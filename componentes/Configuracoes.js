@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { View, Text, TextInput, Alert, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { StatusBar } from 'expo-status-bar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Configuracoes({ navigation }) {
     let [codigoLoja, setCodigoLoja] = React.useState('');
@@ -31,7 +33,8 @@ export default function Configuracoes({ navigation }) {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#FFFFFF", marginLeft: 5 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+            <StatusBar style="light" />
             <View>
                 <Text>Código da loja</Text>
                 <TextInput
@@ -47,8 +50,12 @@ export default function Configuracoes({ navigation }) {
                     onChangeText={(text) => setEnderecoApi(text)}
                     value={enderecoApi}
                     autoCapitalize="none" />
-                <Button title="Gravar" onPress={() => gravarConfiguracao()} />
             </View>
-        </View >
+            <View>
+                <TouchableOpacity onPress={() => gravarConfiguracao()}>
+                    <Text style={{ fontSize: 20, color: "#4682b4", alignSelf: "center", paddingTop: 20 }}>Gravar</Text>
+                </TouchableOpacity>
+            </View>
+        </SafeAreaView>
     );
 }

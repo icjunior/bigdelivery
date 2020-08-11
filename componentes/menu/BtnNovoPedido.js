@@ -6,8 +6,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function NovoPedido() {
     const navigation = useNavigation();
     return (
-        <TouchableOpacity onPress={() => { navigation.navigate('InclusaoItens') }}>
-            <MaterialIcons name="add-circle" size={24} color="#FFFFFF" style={{paddingRight: 10}} />
+        <TouchableOpacity onPress={() => { navigation.navigate('InclusaoItens', { produtoScaneado: '' }) }}>
+            <MaterialIcons name="add-circle" size={24} color="#FFFFFF" style={{ paddingRight: 10 }} />
         </TouchableOpacity>
     );
 }

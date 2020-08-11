@@ -3,6 +3,7 @@ import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import Pedido from './Pedido';
 import { get } from '../api/PedidoService';
 import AsyncStorage from '@react-native-community/async-storage';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Home() {
 
@@ -20,6 +21,7 @@ export default function Home() {
 
     return (
         <SafeAreaView style={estilo.container}>
+            <StatusBar style="light" />
             <FlatList
                 data={pedidos}
                 keyExtractor={(item) => item.codPedido.toString()}

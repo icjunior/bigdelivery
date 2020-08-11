@@ -10,6 +10,7 @@ import BtnNovoPedido from './componentes/menu/BtnNovoPedido';
 import BtnProximo from './componentes/menu/BtnProximo';
 import BtnConfiguracoes from './componentes/menu/BtnConfiguracoes';
 import BtnVoltar from './componentes/menu/BtnVoltar';
+import Scanner from './componentes/Scanner';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +69,13 @@ export default function App() {
             headerBackTitleVisible: false,
             headerStyle: { backgroundColor: 'red' },
             headerTitleStyle: { color: '#FFFFFF' }
+          }}
+        />
+        <Stack.Screen
+          name="Scanner"
+          component={Scanner}
+          options={{
+            headerShown: false
           }}
         />
       </Stack.Navigator>

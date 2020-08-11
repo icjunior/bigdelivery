@@ -2,7 +2,9 @@ const uriMercadoria = "/venda";
 
 export const validaEAN = async (codLoja, codMercadoria) => {
     if (codMercadoria.startsWith('2', 0)) {
-        const uri = `http://localhost:8080/api/${uriMercadoria}/${codLoja}/00000000000002310`;
+        codMercadoriaConvertida = codMercadoria.substring(1,7);
+
+        const uri = `http://192.0.1.12:8080/api${uriMercadoria}/${codLoja}/${codMercadoriaConvertida}`;
 
         const requestInfo = {
             method: 'GET',
@@ -13,10 +15,6 @@ export const validaEAN = async (codLoja, codMercadoria) => {
 
         const resposta = await fetch(uri, requestInfo);
 
-        if (resposta.ok) {
-            return resposta.json();
-        } else {
-            Alert.alert('Pedidos', 'Não foi possível recuperar o cadastro dos itens.');
-        }
+        return resposta.json();
     }
 }

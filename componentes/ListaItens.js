@@ -4,6 +4,7 @@ import Item from './Item';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BtnFinalizarPedido from './menu/BtnFinalizarPedido';
+import { StatusBar } from 'expo-status-bar';
 
 export default function ListaItens({ route, navigation }) {
     const { itens } = route.params;
@@ -34,6 +35,7 @@ export default function ListaItens({ route, navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar style="light" />
             <FlatList
                 data={itens}
                 renderItem={({ item }) => (
