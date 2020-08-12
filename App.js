@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, Alert } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ListaItens from './componentes/ListaItens';
 import InclusaoItens from './componentes/InclusaoItens';

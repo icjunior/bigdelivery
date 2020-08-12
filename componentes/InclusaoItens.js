@@ -13,7 +13,7 @@ export default function InclusaoItens({ route, navigation }) {
         headerRight: () => (
             <BtnProximo itens={itens} codigoLoja={codigoLoja} />
         )
-    })
+    });
 
     const [itens, setItens] = React.useState([]);
     const [material, setMaterial] = React.useState('');

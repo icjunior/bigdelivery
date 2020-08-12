@@ -1,7 +1,9 @@
 import { Alert } from 'react-native';
 
-export const post = async (itens, codigoLoja, enderecoApi) => {
-    let uri = `${enderecoApi}/pedido`;
+const uriPedido = "/pedido";
+
+export const post = async (itens, codigoLoja) => {
+    let uri = `http://192.0.1.12:8080/api${uriPedido}`;
 
     const dadosBasicos = {
         numItensPedido: itens.length,
