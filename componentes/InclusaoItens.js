@@ -1,17 +1,21 @@
 import * as React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, Button, Modal, ActivityIndicator } from 'react-native';
 import { codigoLojaConfig } from '../services/Configuracao';
+import { numeroPedidoConfig } from '../services/Configuracao';
 import BtnProximo from './menu/BtnProximo';
 import { montaMaterial } from '../services/ItemService';
 import { validaEAN } from '../function/ValidaEAN';
 import { getMercadoria } from '../api/MercadoriaService';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
+import { atualizaNumeroPedido } from '../services/Configuracao';
+import * as repository from '../repository/PedidoRepository';
+import * as mercadoriaRepository from '../repository/MercadoriaRepository';
 
 export default function InclusaoItens({ route, navigation }) {
     navigation.setOptions({
         headerRight: () => (
-            <BtnProximo itens={itens} codigoLoja={codigoLoja} />
+            <BtnProximo itens={itens} codigoLoja={codigoLoja} codPedido={codPedido} />
         )
     });
 
@@ -20,24 +24,67 @@ export default function InclusaoItens({ route, navigation }) {
     const [quantidade, setQuantidade] = React.useState('');
     const [codigoLoja, setCodigoLoja] = React.useState(0);
     const [codPedidoItem, setCodPedidoItem] = React.useState(1);
+    const [processamento, setProcessamento] = React.useState(false);
+    const [codPedido, setCodPedido] = React.useState(0);
 
     React.useEffect(() => {
-        codigoLojaConfig().then(loja => { setCodigoLoja(loja) });
+        if (route.params?.cabecalho == undefined) {
+            codigoLojaConfig()
+                .then(loja => {
+                    setCodigoLoja(loja);
+                    numeroPedidoConfig().then(
+                        (pedido) => {
+                            setCodPedido(++pedido);
+                        }
+                    )
+                })
+                .catch((erro) => {
+                    Alert.alert('Parâmetros', 'Erro ao recuperar código da loja nos parâmetros.');
+                    console.warn(erro);
+                });
+        } else {
+            let { cabecalho } = route.params;
+            setCodigoLoja(cabecalho.codigo_loja);
+            setCodPedido(cabecalho.id);
+            repository.carregaItem(cabecalho.id)
+                .then((itens) => {
+                    setItens(itens);
+                })
+                .catch((error) => {
+                    console.warn(error);
+                })
+        }
     }, []);
 
     React.useEffect(() => {
-        setMaterial(route.params.produtoScaneado);
-    }, [route.params?.produtoScaneado]);
+        if (codigoLoja != 0 && codPedido != 0 && route.params?.cabecalho == undefined) {
+            repository.criaPedido(codPedido, codigoLoja);
+            atualizaNumeroPedido(codPedido);
+        }
+    }, [codigoLoja, codPedido]);
+
+    React.useEffect(() => {
+        if (route.params.produtoScaneado != null) {
+            setMaterial(route.params.produtoScaneado);
+        }
+    }, [route.params.produtoScaneado]);
 
     gravar = () => {
-        getMercadoria(null, 2, material)
-            .then((resposta) => {
-                setItens([...itens, montaMaterial(codigoLoja, codPedidoItem, material, quantidade, resposta.descricao)]);
+        mercadoriaRepository.buscaItem(("00000000000000000" + material).slice(-17))
+            .then((descricao) => {
+                setItens([...itens, montaMaterial(codigoLoja, codPedidoItem, material, quantidade, descricao)]);
                 setCodPedidoItem(codPedidoItem + 1);
+                repository.gravaItem(codPedido, codigoLoja, codPedidoItem, material, quantidade);
                 setQuantidade('');
                 setMaterial('');
+                setProcessamento(false);
             })
-            .catch((erro) => Alert.alert('Pesquisa de produto', `O produto ${material} não possui cadastro no Zanthus`));
+            .catch((erro) => {
+                setProcessamento(false);
+                setTimeout(() => {
+                    Alert.alert('Pesquisa de produtos', `O produto ${material} não possui cadastro no Zanthus`);
+                }, 1);
+            })
     }
 
     converteProdutoPesado = (produtoZanthus) => {
@@ -50,6 +97,41 @@ export default function InclusaoItens({ route, navigation }) {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <StatusBar style="light" />
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={processamento}>
+                <View style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 22
+                }}>
+                    <View style={{
+                        margin: 20,
+                        backgroundColor: "white",
+                        borderRadius: 20,
+                        padding: 35,
+                        alignItems: "center",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                            width: 0,
+                            height: 2
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5
+                    }}>
+                        <ActivityIndicator size="large" />
+                        <Text>Aguarde</Text>
+                        <Text>Processando</Text>
+                    </View>
+                </View>
+            </Modal>
+
+            <View>
+                <Text style={{ fontSize: 20, margin: 10 }}>Pedido número: {codPedido}</Text>
+            </View>
             <View style={{ flexDirection: "row" }}>
                 <View style={{ margin: 10, flexGrow: 1 }}>
                     <Text style={{ fontSize: 20 }}>Material:</Text>
@@ -89,15 +171,14 @@ export default function InclusaoItens({ route, navigation }) {
                 />
             </View>
             <View>
-                <TouchableOpacity onPress={() => {
+                <Button title="Gravar" onPress={() => {
                     if (material == '' || quantidade == '') {
                         Alert.alert('', 'Campos obrigatórios não preenchidos. Tente novamente');
                         return;
                     }
+                    setProcessamento(true);
                     gravar();
-                }}>
-                    <Text style={{ fontSize: 20, color: "#4682b4", alignSelf: "center", paddingTop: 20 }}>Gravar</Text>
-                </TouchableOpacity>
+                }} />
             </View>
         </SafeAreaView>
     );

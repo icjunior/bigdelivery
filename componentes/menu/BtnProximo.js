@@ -13,7 +13,7 @@ export default function NovoPedido(props) {
                 Alert.alert('', 'Nenhum item lançado no pedido. Impossível finalizar.');
                 return;
             }
-            navigation.navigate('ListaItens', { itens: props.itens, codigoLoja: props.codigoLoja })
+            navigation.navigate('ListaItens', { itens: props.itens, codigoLoja: props.codigoLoja, codPedido: props.codPedido })
         }}>
             <MaterialIcons name="queue-play-next" size={24} color="#FFFFFF" style={{ paddingRight: 10 }} />
         </TouchableOpacity>

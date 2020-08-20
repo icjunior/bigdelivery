@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { SafeAreaView, FlatList, StyleSheet, View, Alert, AsyncStorage, ActivityIndicator } from 'react-native';
+import { SafeAreaView, FlatList, StyleSheet, View, Alert, AsyncStorage } from 'react-native';
 import Item from './Item';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BtnFinalizarPedido from './menu/BtnFinalizarPedido';
 import { StatusBar } from 'expo-status-bar';
+import * as pedidoRepository from '../repository/PedidoRepository';
 
 export default function ListaItens({ route, navigation }) {
     const { itens } = route.params;
     const { codigoLoja } = route.params;
+    const { codPedido } = route.params;
     const [refresh, setRefresh] = React.useState();
     const [enderecoApi, setEnderecoApi] = React.useState('');
 
@@ -24,13 +26,14 @@ export default function ListaItens({ route, navigation }) {
 
     navigation.setOptions({
         headerRight: () => (
-            <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} enderecoApi={enderecoApi} />
+            <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} enderecoApi={enderecoApi} codPedido={codPedido} />
         )
     })
 
     const excluirItem = (item) => {
-        setRefresh(!refresh);
         itens.splice(itens.indexOf(item), 1);
+        pedidoRepository.apagaItemPedido(codPedido, codigoLoja, item.codPedidoItem);
+        setRefresh(!refresh);
     }
 
     return (

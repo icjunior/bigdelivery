@@ -11,6 +11,7 @@ import BtnProximo from './componentes/menu/BtnProximo';
 import BtnConfiguracoes from './componentes/menu/BtnConfiguracoes';
 import BtnVoltar from './componentes/menu/BtnVoltar';
 import Scanner from './componentes/Scanner';
+import BtnCargaProduto from './componentes/menu/BtnCargaProduto';
 
 const Stack = createStackNavigator();
 
@@ -23,8 +24,12 @@ export default function App() {
           component={Home}
           options={{
             title: 'Pedidos',
+            headerLeft: () => {
+
+            },
             headerRight: () => (
               <View style={{ flexDirection: "row" }}>
+                <BtnCargaProduto />
                 <BtnConfiguracoes />
                 <BtnNovoPedido />
               </View>

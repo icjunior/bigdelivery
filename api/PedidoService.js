@@ -1,5 +1,3 @@
-import { Alert } from 'react-native';
-
 const uriPedido = "/pedido";
 
 export const post = async (itens, codigoLoja) => {
@@ -23,11 +21,7 @@ export const post = async (itens, codigoLoja) => {
 
     const resposta = await fetch(uri, requestInfo);
 
-    if (resposta.ok) {
-        return resposta.json();
-    } else {
-        Alert.alert('Finalização', 'Não foi possível finalizar o pedido');
-    }
+    return resposta.json();
 }
 
 export const get = async (enderecoApi) => {
@@ -42,9 +36,5 @@ export const get = async (enderecoApi) => {
 
     const resposta = await fetch(uri, requestInfo);
 
-    if (resposta.ok) {
-        return resposta.json();
-    } else {
-        Alert.alert('Pedidos', 'Não foi recuperar a lista de pedidos');
-    }
+    return resposta.json();
 }

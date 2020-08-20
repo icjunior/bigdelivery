@@ -1,29 +1,22 @@
 import * as React from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Modal, View, ActivityIndicator, Text } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, Modal, View, ActivityIndicator, Text, Alert } from 'react-native';
 import Pedido from './Pedido';
-import { get } from '../api/PedidoService';
-import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { tableConfig } from '../database/TableConfig';
+import { listaPedido } from '../repository/PedidoRepository';
 
-export default function Home() {
-
+export default function Home({ navigation }) {
     const [pedidos, setPedidos] = React.useState([]);
     const [modalVisible, setModalVisible] = React.useState(true);
 
     React.useEffect(() => {
-        recuperaConfiguracao();
+        tableConfig();
+        listaPedido().then((resposta) => {
+            setPedidos(resposta);
+            setModalVisible(false);
+        })
     }, []);
-
-    recuperaConfiguracao = async () => {
-        return await AsyncStorage
-            .getItem('enderecoApi')
-            .then((endereco) => {
-                get(endereco).then((lista) => {
-                    setPedidos(lista);
-                    setModalVisible(false);
-                })
-            });
-    }
 
     return (
         <SafeAreaView style={estilo.container}>
@@ -31,8 +24,7 @@ export default function Home() {
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={modalVisible}
-            >
+                visible={modalVisible}>
                 <View style={{
                     flex: 1,
                     justifyContent: "center",
@@ -60,12 +52,38 @@ export default function Home() {
                     </View>
                 </View>
             </Modal>
-
             <FlatList
                 data={pedidos}
-                keyExtractor={(item) => item.codPedido.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) =>
-                    <Pedido pedido={item} />
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('InclusaoItens', {
+                                cabecalho: item,
+                                produtoScaneado: ''
+                            })
+                        }}
+                        onLongPress={() => {
+                            Alert.alert('Pedido',
+                                `Tem certeza que deseja reabrir o pedido ${item.id}`,
+                                [
+                                    {
+                                        text: "Sim",
+                                        onPress: () => {
+                                            navigation.navigate('InclusaoItens', {
+                                                cabecalho: item,
+                                                produtoScaneado: null
+                                            })
+                                        }
+                                    },
+                                    {
+                                        text: "Não",
+                                        onPress: () => { return }
+                                    }
+                                ])
+                        }}>
+                        <Pedido pedido={item} />
+                    </TouchableOpacity>
                 }>
             </FlatList>
         </SafeAreaView >
