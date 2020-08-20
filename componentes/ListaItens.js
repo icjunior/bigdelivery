@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, FlatList, StyleSheet, View, Alert, AsyncStorage } from 'react-native';
+import { SafeAreaView, FlatList, StyleSheet, View, Alert, AsyncStorage, Text } from 'react-native';
 import Item from './Item';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -31,6 +31,7 @@ export default function ListaItens({ route, navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Text style={styles.textoPequeno}>Total de itens: {itens.length}</Text>
             <StatusBar style="light" />
             <FlatList
                 data={itens}
@@ -89,5 +90,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center",
         marginRight: 5
+    },
+    textoPequeno: {
+        fontSize: 20,
+        margin: 10
     }
 });
