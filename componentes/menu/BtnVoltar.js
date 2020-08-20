@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Alert } from 'react-native';
 
-export default function BtnConfiguracoes() {
+export default function BtnVoltar() {
     const navigation = useNavigation();
 
     return (

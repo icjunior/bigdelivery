@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BtnFinalizarPedido from './menu/BtnFinalizarPedido';
 import { StatusBar } from 'expo-status-bar';
 import * as pedidoRepository from '../repository/PedidoRepository';
+import MenuConexao from './menu/MenuConexao';
 
 export default function ListaItens({ route, navigation }) {
     const { itens } = route.params;
@@ -15,7 +16,10 @@ export default function ListaItens({ route, navigation }) {
 
     navigation.setOptions({
         headerRight: () => (
-            <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} codPedido={codPedido} />
+            <View style={{ flexDirection: "row" }}>
+                <MenuConexao />
+                <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} codPedido={codPedido} />
+            </View>
         )
     })
 
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
     containerView: {
         padding: 20,
         marginVertical: 8,
-        marginHorizontal: 16,
+        marginHorizontal: 5,
         borderWidth: 1,
         borderColor: '#ddd',
         flexDirection: "row"

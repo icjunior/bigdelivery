@@ -27,9 +27,9 @@ export default function Pedido(props) {
 const estilo = StyleSheet.create({
     container: {
         flexDirection: "row",
-        padding: 20,
+        padding: 10,
         marginVertical: 8,
-        marginHorizontal: 16,
+        marginHorizontal: 5,
         borderWidth: 1,
         borderColor: '#ddd'
     },

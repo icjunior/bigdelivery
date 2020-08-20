@@ -22,9 +22,9 @@ export default function Item(props) {
 
 const estilo = StyleSheet.create({
     container: {
-        padding: 20,
+        padding: 10,
         marginVertical: 8,
-        marginHorizontal: 16,
+        marginHorizontal: 5,
         borderWidth: 1,
         borderColor: '#ddd',
         flexDirection: "row"

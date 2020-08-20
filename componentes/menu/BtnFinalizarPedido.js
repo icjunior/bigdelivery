@@ -58,7 +58,7 @@ export default function BtnFinalizarPedido(props) {
                     ]
                 )
             }}>
-                <FontAwesome5 name="truck-loading" size={24} color="#FFFFFF" style={{ padding: 10 }} />
+                <FontAwesome5 name="truck-loading" size={24} color="#FFFFFF" style={{ paddingRight: 10 }} />
             </TouchableOpacity>
         </View>
     );

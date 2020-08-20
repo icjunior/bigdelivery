@@ -11,11 +11,15 @@ import * as repository from '../repository/PedidoRepository';
 import * as mercadoriaRepository from '../repository/MercadoriaRepository';
 import { styleModal } from './styles/StyleModal';
 import { buscaPreco } from '../repository/VendaRepository';
+import MenuConexao from './menu/MenuConexao';
 
 export default function InclusaoItens({ route, navigation }) {
     navigation.setOptions({
         headerRight: () => (
-            <BtnProximo itens={itens} codigoLoja={codigoLoja} codPedido={codPedido} />
+            <View style={{ flexDirection: 'row' }}>
+                <MenuConexao />
+                <BtnProximo itens={itens} codigoLoja={codigoLoja} codPedido={codPedido} />
+            </View>
         )
     });
 
@@ -122,7 +126,7 @@ export default function InclusaoItens({ route, navigation }) {
                         onChangeText={material => { setMaterial(material) }}
                         onBlur={() => {
                             if (material.length == 13 && material.startsWith("2")) {
-                                buscaPreco(material.substring(1,7))
+                                buscaPreco(material.substring(1, 7))
                                     .then((resposta) => {
                                         converteProdutoPesado(resposta);
                                     })

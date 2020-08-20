@@ -50,30 +50,16 @@ export default function Home({ navigation }) {
                 renderItem={({ item }) =>
                     <TouchableOpacity
                         onPress={() => {
+                            if (item.codPedidoZanthus != null) {
+                                Alert.alert('Pedidos', `O pedido ${item.id} já foi integrado com o Zanthus. Impossível abertura`)
+                                return;
+                            }
                             navigation.navigate('InclusaoItens', {
                                 cabecalho: item,
                                 produtoScaneado: ''
                             })
                         }}
-                        onLongPress={() => {
-                            Alert.alert('Pedido',
-                                `Tem certeza que deseja reabrir o pedido ${item.id}`,
-                                [
-                                    {
-                                        text: "Sim",
-                                        onPress: () => {
-                                            navigation.navigate('InclusaoItens', {
-                                                cabecalho: item,
-                                                produtoScaneado: null
-                                            })
-                                        }
-                                    },
-                                    {
-                                        text: "Não",
-                                        onPress: () => { return }
-                                    }
-                                ])
-                        }}>
+                    >
                         <Pedido pedido={item} />
                     </TouchableOpacity>
                 }>

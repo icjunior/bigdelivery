@@ -12,6 +12,7 @@ import BtnConfiguracoes from './componentes/menu/BtnConfiguracoes';
 import BtnVoltar from './componentes/menu/BtnVoltar';
 import Scanner from './componentes/Scanner';
 import BtnCargaProduto from './componentes/menu/BtnCargaProduto';
+import MenuConexao from './componentes/menu/MenuConexao';
 
 const Stack = createStackNavigator();
 
@@ -24,11 +25,9 @@ export default function App() {
           component={Home}
           options={{
             title: 'Pedidos',
-            headerLeft: () => {
-
-            },
             headerRight: () => (
               <View style={{ flexDirection: "row" }}>
+                <MenuConexao />
                 <BtnCargaProduto />
                 <BtnConfiguracoes />
                 <BtnNovoPedido />
@@ -45,11 +44,14 @@ export default function App() {
             headerBackTitleVisible: false,
             headerRight: () => (
               <View style={{ flexDirection: "row" }}>
+                <MenuConexao />
                 <BtnProximo />
               </View>
             ),
             headerLeft: () => (
-              <BtnVoltar />
+              <View>
+                <BtnVoltar />
+              </View>
             ),
             headerStyle: { backgroundColor: 'red' },
             headerTitleStyle: { color: '#FFFFFF' }
