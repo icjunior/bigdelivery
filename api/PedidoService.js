@@ -2,8 +2,12 @@ import * as Service from '../services/Configuracao';
 
 const uriPedido = "/pedido";
 
+const recuperaEndereco = async () => {
+    return await Service.enderecoApi();
+}
+
 export const post = async (itens, codigoLoja) => {
-    const enderecoApi = await Service.enderecoApi();
+    const enderecoApi = await recuperaEndereco();
 
     let uri = `${enderecoApi}${uriPedido}`;
 
@@ -29,7 +33,7 @@ export const post = async (itens, codigoLoja) => {
 }
 
 export const get = async () => {
-    const enderecoApi = await Service.enderecoApi();
+    const enderecoApi = await recuperaEndereco();
 
     let uri = `${enderecoApi}/pedido`;
 
