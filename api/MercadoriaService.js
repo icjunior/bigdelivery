@@ -1,7 +1,11 @@
+import * as Service from '../services/Configuracao';
+
 const uriMercadoria = "/mercadoria";
 
-export const getMercadoria = async (enderecoApi, codLoja, codMercadoria) => {
-    const uri = `http://192.0.1.12:8080/api${uriMercadoria}/${codLoja}/${codMercadoria}`;
+export const getMercadoria = async (codLoja, codMercadoria) => {
+    const enderecoApi = await Service.enderecoApi();
+
+    const uri = `${enderecoApi}${uriMercadoria}/${codLoja}/${codMercadoria}`;
 
     const requestInfo = {
         method: 'GET',
@@ -15,8 +19,10 @@ export const getMercadoria = async (enderecoApi, codLoja, codMercadoria) => {
     return resposta.json();
 }
 
-export const getCarga = async (enderecoApi, codLoja) => {
-    const uri = `http://localhost:8080/api${uriMercadoria}/${codLoja}`;
+export const getCarga = async (codLoja) => {
+    const enderecoApi = await Service.enderecoApi();
+
+    const uri = `${enderecoApi}${uriMercadoria}/${codLoja}`;
 
     const requestInfo = {
         method: 'GET',

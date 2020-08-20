@@ -15,7 +15,7 @@ export default function Scanner({ navigation }) {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        navigation.navigate('InclusaoItens', { produtoScaneado: data });
+        navigation.goBack('InclusaoItens', { produtoScaneado: data });
     };
 
     if (hasPermission === null) {

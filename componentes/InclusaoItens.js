@@ -4,13 +4,13 @@ import { codigoLojaConfig } from '../services/Configuracao';
 import { numeroPedidoConfig } from '../services/Configuracao';
 import BtnProximo from './menu/BtnProximo';
 import { montaMaterial } from '../services/ItemService';
-import { validaEAN } from '../function/ValidaEAN';
-import { getMercadoria } from '../api/MercadoriaService';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { atualizaNumeroPedido } from '../services/Configuracao';
 import * as repository from '../repository/PedidoRepository';
 import * as mercadoriaRepository from '../repository/MercadoriaRepository';
+import { styleModal } from './styles/StyleModal';
+import { buscaPreco } from '../repository/VendaRepository';
 
 export default function InclusaoItens({ route, navigation }) {
     navigation.setOptions({
@@ -89,7 +89,7 @@ export default function InclusaoItens({ route, navigation }) {
 
     converteProdutoPesado = (produtoZanthus) => {
         valor = material.substring(7, 12) / 100;
-        quantidadeCalculada = valor / produtoZanthus.precoUnitario;
+        quantidadeCalculada = valor / produtoZanthus.venda;
         setMaterial(material.substring(1, 7));
         setQuantidade(quantidadeCalculada.toFixed(3));
     }
@@ -101,28 +101,9 @@ export default function InclusaoItens({ route, navigation }) {
                 animationType="slide"
                 transparent={true}
                 visible={processamento}>
-                <View style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 22
-                }}>
-                    <View style={{
-                        margin: 20,
-                        backgroundColor: "white",
-                        borderRadius: 20,
-                        padding: 35,
-                        alignItems: "center",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5
-                    }}>
-                        <ActivityIndicator size="large" />
+                <View style={styleModal.viewPrincipalModal}>
+                    <View style={styleModal.viewSecundariaModal}>
+                        <ActivityIndicator size="large" color="red" />
                         <Text>Aguarde</Text>
                         <Text>Processando</Text>
                     </View>
@@ -141,7 +122,7 @@ export default function InclusaoItens({ route, navigation }) {
                         onChangeText={material => { setMaterial(material) }}
                         onBlur={() => {
                             if (material.length == 13 && material.startsWith("2")) {
-                                validaEAN(2, material)
+                                buscaPreco(material.substring(1,7))
                                     .then((resposta) => {
                                         converteProdutoPesado(resposta);
                                     })

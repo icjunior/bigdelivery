@@ -17,11 +17,11 @@ export const tableConfig = () => {
             tx.executeSql(
                 "create table if not exists item_pedido (id INTEGER PRIMARY KEY AUTOINCREMENT, codigo_pedido int, codigo_loja int, cod_pedido_item int, material text, quantidade numeric(10,2));"
             );
-            tx.executeSql("DROP TABLE produto");
+            //tx.executeSql("DROP TABLE produto");
             tx.executeSql(
                 "create table if not exists produto (id INTEGER PRIMARY KEY AUTOINCREMENT, ean varchar(17), descricao text);"
             );
-            tx.executeSql("DROP TABLE produto_venda");
+            //tx.executeSql("DROP TABLE produto_venda");
             tx.executeSql(
                 "create table if not exists produto_venda (id INTEGER PRIMARY KEY AUTOINCREMENT, ean varchar(17), venda numeric(10,5));"
             );

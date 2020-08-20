@@ -5,7 +5,7 @@ const db = DatabaseConnection.getConnection();
 export const insereMaterial = (itens) => {
     db.transaction(
         tx => {
-            tx.executeSql("DELETE FROM produto", []);
+            tx.executeSql("DELETE FROM produto",[]);
             itens.map((item) => {
                 tx.executeSql("INSERT INTO produto (ean, descricao) VALUES (?,?)", [item.codMercadoria, item.descricao]);
             })

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { Alert, View, Modal, ActivityIndicator, Text } from 'react-native';
+import { Alert, View, Modal, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import { getCarga } from '../../api/MercadoriaService';
 import { getCargaVenda } from '../../api/VendaService';
 import { codigoLojaConfig } from '../../services/Configuracao';
 import * as VendaRepository from '../../repository/VendaRepository';
 import * as MercadoriaRepository from '../../repository/MercadoriaRepository';
+import { styleModal } from '../styles/StyleModal';
 
 export default function BtnCargaProduto() {
     const [processamento, setProcessamento] = React.useState(false);
@@ -17,31 +18,12 @@ export default function BtnCargaProduto() {
                 animationType="slide"
                 transparent={true}
                 visible={processamento}>
-                <View style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 22
-                }}>
-                    <View style={{
-                        margin: 20,
-                        backgroundColor: "white",
-                        borderRadius: 20,
-                        padding: 35,
-                        alignItems: "center",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5
-                    }}>
-                        <ActivityIndicator size="large" />
+                <View style={styleModal.viewPrincipalModal}>
+                    <View style={styleModal.viewSecundariaModal}>
+                        <ActivityIndicator size="large" color="red" />
                         <Text>Aguarde</Text>
-                        <Text>Processando</Text>
-                        <Text>Esse processamento poderá levar alguns minutos</Text>
+                        <Text>Processando carga de produtos e preços</Text>
+                        <Text>Isso poderá levar alguns minutos</Text>
                         <Text>Não feche o aplicativo</Text>
                     </View>
                 </View>
@@ -55,13 +37,16 @@ export default function BtnCargaProduto() {
                                 setProcessamento(true);
                                 codigoLojaConfig()
                                     .then((codigoLoja) => {
-                                        getCarga(null, codigoLoja)
+                                        getCarga(codigoLoja)
                                             .then((resposta) => {
                                                 MercadoriaRepository.insereMaterial(resposta);
                                                 getCargaVenda(codigoLoja)
                                                     .then((resposta) => {
                                                         VendaRepository.gravaCarga(resposta);
                                                         setProcessamento(false);
+                                                        setTimeout(() => {
+                                                            Alert.alert(`Carga de produtos e preços executada`);
+                                                        }, 2);
                                                     })
                                                     .catch((erro) => {
                                                         console.warn(erro);

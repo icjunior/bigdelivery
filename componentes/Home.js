@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { FlatList, SafeAreaView, StyleSheet, Modal, View, ActivityIndicator, Text, Alert } from 'react-native';
 import Pedido from './Pedido';
 import { StatusBar } from 'expo-status-bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tableConfig } from '../database/TableConfig';
 import { listaPedido } from '../repository/PedidoRepository';
+import { styleModal } from './styles/StyleModal';
 
 export default function Home({ navigation }) {
     const [pedidos, setPedidos] = React.useState([]);
@@ -12,11 +14,20 @@ export default function Home({ navigation }) {
 
     React.useEffect(() => {
         tableConfig();
-        listaPedido().then((resposta) => {
-            setPedidos(resposta);
-            setModalVisible(false);
-        })
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            listaPedido()
+                .then((resposta) => {
+                    setPedidos(resposta);
+                    setModalVisible(false);
+                })
+                .catch((erro) => {
+                    console.warn(erro);
+                })
+        }, [])
+    );
 
     return (
         <SafeAreaView style={estilo.container}>
@@ -25,30 +36,11 @@ export default function Home({ navigation }) {
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}>
-                <View style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 22
-                }}>
-                    <View style={{
-                        margin: 20,
-                        backgroundColor: "white",
-                        borderRadius: 20,
-                        padding: 35,
-                        alignItems: "center",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5
-                    }}>
-                        <ActivityIndicator size="large" />
+                <View style={styleModal.viewPrincipalModal}>
+                    <View style={styleModal.viewSecundariaModal}>
+                        <ActivityIndicator size="large" color="red" />
                         <Text>Aguarde</Text>
-                        <Text>Processando</Text>
+                        <Text>Buscando pedidos</Text>
                     </View>
                 </View>
             </Modal>

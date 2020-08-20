@@ -1,7 +1,11 @@
+import * as Service from '../services/Configuracao';
+
 const uriPedido = "/pedido";
 
 export const post = async (itens, codigoLoja) => {
-    let uri = `http://192.0.1.12:8080/api${uriPedido}`;
+    const enderecoApi = await Service.enderecoApi();
+
+    let uri = `${enderecoApi}${uriPedido}`;
 
     const dadosBasicos = {
         numItensPedido: itens.length,
@@ -24,7 +28,9 @@ export const post = async (itens, codigoLoja) => {
     return resposta.json();
 }
 
-export const get = async (enderecoApi) => {
+export const get = async () => {
+    const enderecoApi = await Service.enderecoApi();
+
     let uri = `${enderecoApi}/pedido`;
 
     const requestInfo = {

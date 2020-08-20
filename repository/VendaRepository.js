@@ -16,3 +16,27 @@ export const gravaCarga = (itens) => {
         }
     )
 }
+
+export const buscaPreco = (ean) => {
+    let item;
+
+    return new Promise((resolve, reject) => {
+        db.transaction(
+            tx => {
+                tx.executeSql("SELECT * FROM produto_venda WHERE ean = ?", [("00000000000000000" + ean).slice(-17)], (_, results) => {
+                    if (results.rows.length == 0) {
+                        reject(`O material ${ean} não possui cadastro no sistema Zanthus`);
+                    } else {
+                        for (let i = 0; i < results.rows.length; i++) {
+                            item = results.rows.item(i);
+                        }
+                        resolve(item);
+                    }
+                });
+            },
+            (error) => {
+                reject(error);
+            }
+        )
+    })
+}

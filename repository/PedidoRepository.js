@@ -77,7 +77,7 @@ export const listaPedido = () => {
     return new Promise((resolve, reject) => {
         db.transaction(
             tx => {
-                tx.executeSql("SELECT * FROM pedido", [], (_, results) => {
+                tx.executeSql("SELECT * FROM pedido ORDER BY id DESC", [], (_, results) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         pedidos.push(results.rows.item(i));
                     }

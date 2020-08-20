@@ -5,12 +5,12 @@ import { post } from '../../api/PedidoService';
 import { Alert, View, ActivityIndicator, Modal, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { atualizaPedido } from '../../repository/PedidoRepository';
+import { styleModal } from '../styles/StyleModal';
 
 export default function BtnFinalizarPedido(props) {
     const navigation = useNavigation();
     const itens = props.itens;
     const codigoLoja = props.codigoLoja;
-    const enderecoApi = props.enderecoApi;
     const codPedido = props.codPedido;
     const [processamento, setProcessamento] = React.useState(false);
 
@@ -20,30 +20,11 @@ export default function BtnFinalizarPedido(props) {
                 animationType="slide"
                 transparent={true}
                 visible={processamento}>
-                <View style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: 22
-                }}>
-                    <View style={{
-                        margin: 20,
-                        backgroundColor: "white",
-                        borderRadius: 20,
-                        padding: 35,
-                        alignItems: "center",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5
-                    }}>
-                        <ActivityIndicator size="large" />
+                <View style={styleModal.viewPrincipalModal}>
+                    <View style={styleModal.viewSecundariaModal}>
+                        <ActivityIndicator size="large" color="red" />
                         <Text>Aguarde</Text>
-                        <Text>Processando</Text>
+                        <Text>Finalizando pedido</Text>
                     </View>
                 </View>
             </Modal>
@@ -54,14 +35,14 @@ export default function BtnFinalizarPedido(props) {
                             text: 'Sim',
                             onPress: () => {
                                 setProcessamento(true);
-                                post(itens, codigoLoja, enderecoApi)
+                                post(itens, codigoLoja)
                                     .then((resposta) => {
                                         atualizaPedido(codPedido, resposta.codPedido);
                                         setProcessamento(false);
                                         setTimeout(() => {
                                             Alert.alert(`Pedido ${resposta.codPedido} gerado com sucesso`);
-                                            navigation.push('Home', { codPedido: codPedido });
-                                        }, 1);
+                                            navigation.navigate('Home');
+                                        }, 1000);
                                     })
                                     .catch((erro) => {
                                         console.warn(erro);

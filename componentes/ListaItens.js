@@ -12,21 +12,10 @@ export default function ListaItens({ route, navigation }) {
     const { codigoLoja } = route.params;
     const { codPedido } = route.params;
     const [refresh, setRefresh] = React.useState();
-    const [enderecoApi, setEnderecoApi] = React.useState('');
-
-    React.useEffect(() => {
-        recuperaConfiguracao();
-    }, [])
-
-    recuperaConfiguracao = async () => {
-        return await AsyncStorage
-            .getItem('enderecoApi')
-            .then((endereco) => setEnderecoApi(endereco));
-    }
 
     navigation.setOptions({
         headerRight: () => (
-            <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} enderecoApi={enderecoApi} codPedido={codPedido} />
+            <BtnFinalizarPedido codigoLoja={codigoLoja} itens={itens} codPedido={codPedido} />
         )
     })
 
