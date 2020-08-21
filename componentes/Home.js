@@ -7,10 +7,27 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tableConfig } from '../database/TableConfig';
 import { listaPedido } from '../repository/PedidoRepository';
 import { styleModal } from './styles/StyleModal';
+import * as Configuracao from '../services/Configuracao';
+import BtnNovoPedido from '../componentes/menu/BtnNovoPedido';
+import BtnCargaProduto from '../componentes/menu/BtnCargaProduto';
+import BtnConfiguracoes from '../componentes/menu/BtnConfiguracoes';
+import MenuConexao from '../componentes/menu/MenuConexao';
 
 export default function Home({ navigation }) {
     const [pedidos, setPedidos] = React.useState([]);
     const [modalVisible, setModalVisible] = React.useState(true);
+    const [configOk, setConfigOk] = React.useState(true);
+
+    navigation.setOptions({
+        headerRight: () => (
+            <View style={{ flexDirection: "row" }}>
+                <MenuConexao />
+                {configOk == true && <BtnCargaProduto />}
+                <BtnConfiguracoes />
+                {configOk == true && <BtnNovoPedido />}
+            </View>
+        )
+    })
 
     React.useEffect(() => {
         tableConfig();
@@ -25,9 +42,21 @@ export default function Home({ navigation }) {
                 })
                 .catch((erro) => {
                     console.warn(erro);
-                })
+                });
+            validaConfiguracoes();
         }, [])
     );
+
+    const validaConfiguracoes = () => {
+        Configuracao.configuracoes().then((configuracoes) => {
+            if (configuracoes.codigoLoja == null || configuracoes.enderecoApi == null || configuracoes.numeroPedido == null) {
+                setConfigOk(false);
+                Alert.alert('Configurações', 'Existem configurações não definidas. Algumas funcionalidades não estarão disponíveis.');
+            } else {
+                setConfigOk(true);
+            }
+        })
+    }
 
     return (
         <SafeAreaView style={estilo.container}>

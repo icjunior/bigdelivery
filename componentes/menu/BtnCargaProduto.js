@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { Alert, View, Modal, ActivityIndicator, Text, StyleSheet } from 'react-native';
+import { Alert, View, Modal, ActivityIndicator, Text } from 'react-native';
 import { getCarga } from '../../api/MercadoriaService';
 import { getCargaVenda } from '../../api/VendaService';
 import { codigoLojaConfig } from '../../services/Configuracao';

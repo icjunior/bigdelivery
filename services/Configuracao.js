@@ -19,3 +19,17 @@ export const atualizaNumeroPedido = async (numeroPedido) => {
         console.warn(e);
     }
 }
+
+export const configuracoes = async () => {
+    const codigoLoja = await codigoLojaConfig();
+    const uri = await enderecoApi();
+    const numeroPedido = await numeroPedidoConfig();
+
+    const configuracoes = {
+        codigoLoja: codigoLoja,
+        enderecoApi: uri,
+        numeroPedido: numeroPedido
+    };
+
+    return configuracoes;
+}

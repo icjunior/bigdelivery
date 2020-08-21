@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, FlatList, StyleSheet, View, Alert, AsyncStorage, Text } from 'react-native';
+import { SafeAreaView, FlatList, StyleSheet, View, Alert, Text } from 'react-native';
 import Item from './Item';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';

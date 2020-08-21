@@ -6,12 +6,9 @@ import ListaItens from './componentes/ListaItens';
 import InclusaoItens from './componentes/InclusaoItens';
 import Home from './componentes/Home';
 import Configuracoes from './componentes/Configuracoes';
-import BtnNovoPedido from './componentes/menu/BtnNovoPedido';
 import BtnProximo from './componentes/menu/BtnProximo';
-import BtnConfiguracoes from './componentes/menu/BtnConfiguracoes';
 import BtnVoltar from './componentes/menu/BtnVoltar';
 import Scanner from './componentes/Scanner';
-import BtnCargaProduto from './componentes/menu/BtnCargaProduto';
 import MenuConexao from './componentes/menu/MenuConexao';
 
 const Stack = createStackNavigator();
@@ -25,14 +22,6 @@ export default function App() {
           component={Home}
           options={{
             title: 'Pedidos',
-            headerRight: () => (
-              <View style={{ flexDirection: "row" }}>
-                <MenuConexao />
-                <BtnCargaProduto />
-                <BtnConfiguracoes />
-                <BtnNovoPedido />
-              </View>
-            ),
             headerStyle: { backgroundColor: 'red' },
             headerTitleStyle: { color: '#FFFFFF' }
           }} />
