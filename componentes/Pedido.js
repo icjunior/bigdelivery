@@ -13,7 +13,7 @@ export default function Pedido(props) {
                 <Text style={estilo.variavel}>{props.pedido.id}</Text>
             </View>
             <View style={estilo.containerCampoData}>
-                <Text style={estilo.titulo}>Valor</Text>
+                <Text style={estilo.titulo}>Data</Text>
                 <Text style={estilo.variavel}>{dataFormatada}</Text>
             </View>
             <View style={{ flexGrow: 2, alignItems: "center" }}>
