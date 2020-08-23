@@ -3,8 +3,10 @@ import { View, Text, TextInput, Alert, SafeAreaView, StyleSheet } from 'react-na
 import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Configuracoes({ navigation }) {
+export default function Configuracoes() {
+    const navigation = useNavigation();
     const [codigoLoja, setCodigoLoja] = React.useState('');
     const [enderecoApi, setEnderecoApi] = React.useState('');
     const [codigoPedido, setCodigoPedido] = React.useState('');

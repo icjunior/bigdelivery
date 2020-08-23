@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, Button, Modal, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, Button, Modal, ActivityIndicator, StyleSheet } from 'react-native';
 import { codigoLojaConfig } from '../services/Configuracao';
 import { numeroPedidoConfig } from '../services/Configuracao';
 import BtnProximo from './menu/BtnProximo';
@@ -12,8 +13,11 @@ import * as mercadoriaRepository from '../repository/MercadoriaRepository';
 import { styleModal } from './styles/StyleModal';
 import { buscaPreco } from '../repository/VendaRepository';
 import MenuConexao from './menu/MenuConexao';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export default function InclusaoItens({ route, navigation }) {
+export default function InclusaoItens({ route }) {
+    const navigation = useNavigation();
+
     navigation.setOptions({
         headerRight: () => (
             <View style={{ flexDirection: 'row' }}>
@@ -31,6 +35,10 @@ export default function InclusaoItens({ route, navigation }) {
     const [processamento, setProcessamento] = React.useState(false);
     const [codPedido, setCodPedido] = React.useState(0);
 
+    const [scanearProduto, setScanearProduto] = React.useState(false);
+    const [produto, setProduto] = React.useState('');
+    const [scanned, setScanned] = React.useState(false);
+
     React.useEffect(() => {
         if (route.params?.cabecalho == undefined) {
             codigoLojaConfig()
@@ -44,7 +52,6 @@ export default function InclusaoItens({ route, navigation }) {
                 })
                 .catch((erro) => {
                     Alert.alert('Parâmetros', 'Erro ao recuperar código da loja nos parâmetros.');
-                    console.warn(erro);
                 });
         } else {
             let { cabecalho } = route.params;
@@ -68,10 +75,8 @@ export default function InclusaoItens({ route, navigation }) {
     }, [codigoLoja, codPedido]);
 
     React.useEffect(() => {
-        if (route.params.produtoScaneado != null) {
-            setMaterial(route.params.produtoScaneado);
-        }
-    }, [route.params.produtoScaneado]);
+        setMaterial(produto);
+    }, [produto]);
 
     gravar = () => {
         mercadoriaRepository.buscaItem(("00000000000000000" + material).slice(-17))
@@ -98,6 +103,12 @@ export default function InclusaoItens({ route, navigation }) {
         setQuantidade(quantidadeCalculada.toFixed(3));
     }
 
+    const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true);
+        setProduto(data);
+        setScanearProduto(false);
+    };
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <StatusBar style="light" />
@@ -111,6 +122,24 @@ export default function InclusaoItens({ route, navigation }) {
                         <Text>Aguarde</Text>
                         <Text>Processando</Text>
                     </View>
+                </View>
+            </Modal>
+
+            <Modal animationType="slide"
+                transparent={true}
+                visible={scanearProduto}>
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                    }}>
+                    <BarCodeScanner
+                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                        style={StyleSheet.absoluteFillObject}
+                    />
+                    <Button title="Fechar câmera" onPress={() => setScanearProduto(false)} />
+                    {scanned && <Button title={'Toque na tela novamente para scanear outro produto'} onPress={() => setScanned(false)} />}
                 </View>
             </Modal>
 
@@ -140,7 +169,7 @@ export default function InclusaoItens({ route, navigation }) {
                     />
                 </View>
                 <View style={{ justifyContent: "center", paddingRight: 10 }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Scanner')}>
+                    <TouchableOpacity onPress={() => setScanearProduto(true)}>
                         <MaterialIcons name="camera-alt" size={30} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -155,7 +184,7 @@ export default function InclusaoItens({ route, navigation }) {
                     keyboardType="decimal-pad"
                 />
             </View>
-            <View>
+            <View style={{ margin: 10 }}>
                 <Button title="Gravar" onPress={() => {
                     if (material == '' || quantidade == '') {
                         Alert.alert('', 'Campos obrigatórios não preenchidos. Tente novamente');

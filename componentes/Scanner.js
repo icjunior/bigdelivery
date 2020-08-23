@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Scanner({ navigation }) {
+export default function Scanner({ route }) {
+    const navigation = useNavigation();
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
 
@@ -15,7 +17,7 @@ export default function Scanner({ navigation }) {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        navigation.goBack('InclusaoItens', { produtoScaneado: data });
+        navigation.navigate('InclusaoItens', { produto: data });
     };
 
     if (hasPermission === null) {
@@ -36,7 +38,6 @@ export default function Scanner({ navigation }) {
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
             />
-
             {scanned && <Button title={'Toque na tela novamente para scanear outro produto'} onPress={() => setScanned(false)} />}
         </View>
     );

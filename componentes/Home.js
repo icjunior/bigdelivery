@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FlatList, SafeAreaView, StyleSheet, Modal, View, ActivityIndicator, Text, Alert } from 'react-native';
 import Pedido from './Pedido';
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +13,8 @@ import BtnCargaProduto from '../componentes/menu/BtnCargaProduto';
 import BtnConfiguracoes from '../componentes/menu/BtnConfiguracoes';
 import MenuConexao from '../componentes/menu/MenuConexao';
 
-export default function Home({ navigation }) {
+export default function Home() {
+    const navigation = useNavigation();
     const [pedidos, setPedidos] = React.useState([]);
     const [modalVisible, setModalVisible] = React.useState(true);
     const [configOk, setConfigOk] = React.useState(true);
@@ -84,8 +85,7 @@ export default function Home({ navigation }) {
                                 return;
                             }
                             navigation.navigate('InclusaoItens', {
-                                cabecalho: item,
-                                produtoScaneado: ''
+                                cabecalho: item
                             })
                         }}
                     >

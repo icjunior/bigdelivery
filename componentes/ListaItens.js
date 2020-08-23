@@ -7,8 +7,10 @@ import BtnFinalizarPedido from './menu/BtnFinalizarPedido';
 import { StatusBar } from 'expo-status-bar';
 import * as pedidoRepository from '../repository/PedidoRepository';
 import MenuConexao from './menu/MenuConexao';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ListaItens({ route, navigation }) {
+export default function ListaItens({ route }) {
+    const navigation = useNavigation();
     const { itens } = route.params;
     const { codigoLoja } = route.params;
     const { codPedido } = route.params;

@@ -37,11 +37,11 @@ export default function App() {
                 <BtnProximo />
               </View>
             ),
-            headerLeft: () => (
-              <View>
-                <BtnVoltar />
-              </View>
-            ),
+            // headerLeft: () => (
+            //   <View>
+            //     <BtnVoltar />
+            //   </View>
+            // ),
             headerStyle: { backgroundColor: 'red' },
             headerTitleStyle: { color: '#FFFFFF' }
           }}
