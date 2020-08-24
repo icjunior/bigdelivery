@@ -1,6 +1,6 @@
 import * as Service from '../services/Configuracao';
 
-const uriPedido = "/pedido";
+const uriPedido = "pedido";
 
 const recuperaEndereco = async () => {
     return await Service.enderecoApi();

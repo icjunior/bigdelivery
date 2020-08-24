@@ -2,18 +2,22 @@ import { DatabaseConnection } from '../database/DatabaseConnection';
 
 const db = DatabaseConnection.getConnection();
 
-export const insereMaterial = (itens) => {
-    db.transaction(
-        tx => {
-            tx.executeSql("DELETE FROM produto",[]);
-            itens.map((item) => {
-                tx.executeSql("INSERT INTO produto (ean, descricao) VALUES (?,?)", [item.codMercadoria, item.descricao]);
-            })
-        },
-        (error) => {
-            Alert.alert('Carga de preços', 'Impossível efetuar carga de preços');
-        }
-    )
+export const insereMaterial = async (itens) => {
+    return new Promise((resolve, reject) => {
+        db.transaction(
+            tx => {
+                tx.executeSql("DELETE FROM produto",[]);
+                itens.map((item) => {
+                    tx.executeSql("INSERT INTO produto (ean, descricao) VALUES (?,?)", [item.codMercadoria, item.descricao]);
+                })
+                resolve(true);
+            },
+            (error) => {
+                reject(error);
+                //Alert.alert('Carga de preços', 'Impossível efetuar carga de preços');
+            }
+        )
+    })
 }
 
 export const buscaItem = (ean) => {

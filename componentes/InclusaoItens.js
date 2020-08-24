@@ -76,6 +76,20 @@ export default function InclusaoItens({ route }) {
 
     React.useEffect(() => {
         setMaterial(produto);
+        if (produto.length == 13 && produto.startsWith("2")) {
+            console.warn(`esse produto atende aos requisitos de balança`);
+            console.warn(produto.substring(1,7));
+            buscaPreco(produto.substring(1, 7))
+                .then((resposta) => {
+                    converteProdutoPesado(resposta);
+                })
+                .catch((erro) => {
+                    Alert.alert('Pesquisa', 'Não foi possível encontrar o preço do produto')
+                });
+        } else {
+            console.warn('produto não atende aos requisitos');
+        }
+
     }, [produto]);
 
     gravar = () => {
@@ -138,7 +152,11 @@ export default function InclusaoItens({ route }) {
                         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                         style={StyleSheet.absoluteFillObject}
                     />
-                    <Button title="Fechar câmera" onPress={() => setScanearProduto(false)} />
+                    <Button title="Fechar câmera" onPress={() => {
+                        setProduto("2012638010694");
+                        setScanearProduto(false)
+
+                    }} />
                     {scanned && <Button title={'Toque na tela novamente para scanear outro produto'} onPress={() => setScanned(false)} />}
                 </View>
             </Modal>
@@ -154,6 +172,7 @@ export default function InclusaoItens({ route }) {
                         style={{ fontSize: 40 }}
                         onChangeText={material => { setMaterial(material) }}
                         onBlur={() => {
+                            console.warn(`estou saindo do campo com o material ${material} digitado`)
                             if (material.length == 13 && material.startsWith("2")) {
                                 buscaPreco(material.substring(1, 7))
                                     .then((resposta) => {

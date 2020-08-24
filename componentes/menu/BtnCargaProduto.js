@@ -1,16 +1,36 @@
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { Alert, View, Modal, ActivityIndicator, Text } from 'react-native';
+import { Alert, View, Modal, ToastAndroid, ActivityIndicator, Text } from 'react-native';
 import { getCarga } from '../../api/MercadoriaService';
 import { getCargaVenda } from '../../api/VendaService';
 import { codigoLojaConfig } from '../../services/Configuracao';
-import * as VendaRepository from '../../repository/VendaRepository';
-import * as MercadoriaRepository from '../../repository/MercadoriaRepository';
 import { styleModal } from '../styles/StyleModal';
 
 export default function BtnCargaProduto() {
     const [processamento, setProcessamento] = React.useState(false);
+
+    const processarCarga = () => {
+        setProcessamento(true);
+        codigoLojaConfig()
+            .then((codigoLoja) => {
+                Promise.all([getCarga(codigoLoja), getCargaVenda(codigoLoja)])
+                    .then((values) => {
+                        setProcessamento(false);
+                        ToastAndroid.showWithGravity(
+                            "Carga de produtos e preços executada com sucesso",
+                            ToastAndroid.SHORT,
+                            ToastAndroid.CENTER
+                        );
+                    })
+                    .catch((erro) => {
+                        console.warn(erro);
+                    })
+            })
+            .catch((erro) => {
+                console.warn(erro);
+            })
+    }
 
     return (
         <View>
@@ -34,29 +54,7 @@ export default function BtnCargaProduto() {
                         {
                             text: "Sim",
                             onPress: () => {
-                                setProcessamento(true);
-                                codigoLojaConfig()
-                                    .then((codigoLoja) => {
-                                        getCarga(codigoLoja)
-                                            .then((resposta) => {
-                                                MercadoriaRepository.insereMaterial(resposta);
-                                                getCargaVenda(codigoLoja)
-                                                    .then((resposta) => {
-                                                        VendaRepository.gravaCarga(resposta);
-                                                        setProcessamento(false);
-                                                        setTimeout(() => {
-                                                            Alert.alert(`Carga de produtos e preços executada`);
-                                                        }, 2);
-                                                    })
-                                                    .catch((erro) => {
-                                                        console.warn(erro);
-                                                    })
-                                            })
-                                            .catch((erro) => {
-                                                console.warn(erro);
-                                                Alert.alert('Carga de produtos', 'Impossível efetuar carga de produtos');
-                                            })
-                                    })
+                                processarCarga();
                             }
                         },
                         {

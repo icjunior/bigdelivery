@@ -1,6 +1,7 @@
 import * as Service from '../services/Configuracao';
+import * as MercadoriaRepository from '../repository/MercadoriaRepository';
 
-const uriMercadoria = "/mercadoria";
+const uriMercadoria = "mercadoria/";
 
 const recuperaEndereco = async () => {
     return await Service.enderecoApi();
@@ -9,7 +10,7 @@ const recuperaEndereco = async () => {
 export const getMercadoria = async (codLoja, codMercadoria) => {
     const enderecoApi = await recuperaEndereco();
 
-    const uri = `${enderecoApi}${uriMercadoria}/${codLoja}/${codMercadoria}`;
+    const uri = `${enderecoApi}${uriMercadoria}${codLoja}/${codMercadoria}`;
 
     const requestInfo = {
         method: 'GET',
@@ -24,18 +25,27 @@ export const getMercadoria = async (codLoja, codMercadoria) => {
 }
 
 export const getCarga = async (codLoja) => {
-    const enderecoApi = await recuperaEndereco();
+    return new Promise(async (resolve, reject) => {
+        const enderecoApi = await recuperaEndereco();
+        const uri = `${enderecoApi}${uriMercadoria}/${codLoja}`;
 
-    const uri = `${enderecoApi}${uriMercadoria}/${codLoja}`;
-
-    const requestInfo = {
-        method: 'GET',
-        headers: {
-            'Content-type': 'application/json'
+        const requestInfo = {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }
         }
-    }
 
-    const resposta = await fetch(uri, requestInfo);
+        const resposta = await fetch(uri, requestInfo);
+        const dadosNovos = await resposta.json();
 
-    return resposta.json();
+        MercadoriaRepository.insereMaterial(dadosNovos)
+            .then((resposta) => {
+                console.warn(resposta);
+                resolve(resposta);
+            })
+            .catch((erro) => {
+                reject(false);
+            })
+    })
 }

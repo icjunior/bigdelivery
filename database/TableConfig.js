@@ -6,7 +6,7 @@ export const tableConfig = () => {
     db.transaction(
         tx => {
             tx.executeSql(
-                "create table if not exists pedido ( "
+                "CREATE TABLE if not exists pedido ( "
                 + "id integer primary key not null, "
                 + "codigo_loja int, "
                 + "datahora datetime, "
@@ -14,7 +14,7 @@ export const tableConfig = () => {
                 + ");"
             );
             tx.executeSql(
-                "create table if not exists item_pedido ( "
+                "CREATE TABLE if not exists item_pedido ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "codigo_pedido int, "
                 + "codigo_loja int, "
@@ -24,17 +24,20 @@ export const tableConfig = () => {
                 + ");"
             );
             tx.executeSql(
-                "create table if not exists produto ( "
+                "CREATE TABLE if not exists produto ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "ean varchar(17), "
                 + " descricao text "
                 + ");"
             );
             tx.executeSql(
-                "create table if not exists produto_venda ( "
+                "CREATE TABLE if not exists produto_venda ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "ean varchar(17), "
                 + "venda numeric(10,5));"
+            );
+            tx.executeSql(
+                "CREATE INDEX IF NOT EXISTS idx_produto ON produto (ean);"
             );
         },
         (error) => {

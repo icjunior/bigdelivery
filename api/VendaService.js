@@ -1,24 +1,34 @@
 import * as Service from '../services/Configuracao';
+import * as VendaRepository from '../repository/VendaRepository';
 
-const uriVenda = "/venda/";
+const uriVenda = "venda/";
 
 const recuperaEndereco = async () => {
     return await Service.enderecoApi();
 }
 
 export const getCargaVenda = async (codLoja) => {
-    const enderecoApi = await recuperaEndereco();
+    return new Promise(async (resolve, reject) => {
+        const enderecoApi = await recuperaEndereco();
 
-    const uri = `${enderecoApi}${uriVenda}${codLoja}`;
+        const uri = `${enderecoApi}${uriVenda}${codLoja}`;
 
-    const requestInfo = {
-        method: 'GET',
-        headers: {
-            'Content-type': 'application/json'
+        const requestInfo = {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }
         }
-    }
 
-    resposta = await fetch(uri, requestInfo);
+        const resposta = await fetch(uri, requestInfo);
+        const dadosNovos = await resposta.json();
 
-    return resposta.json();
+        VendaRepository.gravaCarga(dadosNovos)
+            .then((resposta) => {
+                resolve(resposta);
+            })
+            .catch((erro) => {
+                reject(false);
+            })
+    })
 }
