@@ -38,6 +38,7 @@ export default function InclusaoItens({ route }) {
     const [scanearProduto, setScanearProduto] = React.useState(false);
     const [produto, setProduto] = React.useState('');
     const [scanned, setScanned] = React.useState(false);
+    const [hasPermission, setHasPermission] = React.useState(null);
 
     React.useEffect(() => {
         if (route.params?.cabecalho == undefined) {
@@ -76,9 +77,11 @@ export default function InclusaoItens({ route }) {
 
     React.useEffect(() => {
         setMaterial(produto);
+        validaProdutoPesado(produto);
+    }, [produto]);
+
+    const validaProdutoPesado = (produto) => {
         if (produto.length == 13 && produto.startsWith("2")) {
-            console.warn(`esse produto atende aos requisitos de balança`);
-            console.warn(produto.substring(1,7));
             buscaPreco(produto.substring(1, 7))
                 .then((resposta) => {
                     converteProdutoPesado(resposta);
@@ -86,11 +89,8 @@ export default function InclusaoItens({ route }) {
                 .catch((erro) => {
                     Alert.alert('Pesquisa', 'Não foi possível encontrar o preço do produto')
                 });
-        } else {
-            console.warn('produto não atende aos requisitos');
         }
-
-    }, [produto]);
+    }
 
     gravar = () => {
         mercadoriaRepository.buscaItem(("00000000000000000" + material).slice(-17))
@@ -171,24 +171,19 @@ export default function InclusaoItens({ route }) {
                         placeholder="material"
                         style={{ fontSize: 40 }}
                         onChangeText={material => { setMaterial(material) }}
-                        onBlur={() => {
-                            console.warn(`estou saindo do campo com o material ${material} digitado`)
-                            if (material.length == 13 && material.startsWith("2")) {
-                                buscaPreco(material.substring(1, 7))
-                                    .then((resposta) => {
-                                        converteProdutoPesado(resposta);
-                                    })
-                                    .catch((erro) => {
-                                        Alert.alert('Pesquisa', 'Não foi possível encontrar o cadastro do produto')
-                                    });
-                            }
-                        }}
+                        onBlur={() => { validaProdutoPesado(material); }}
                         value={material.toString()}
                         keyboardType="numeric"
                     />
                 </View>
                 <View style={{ justifyContent: "center", paddingRight: 10 }}>
-                    <TouchableOpacity onPress={() => setScanearProduto(true)}>
+                    <TouchableOpacity onPress={() => {
+                        (async () => {
+                            const { status } = await BarCodeScanner.requestPermissionsAsync();
+                            setHasPermission(status === 'granted');
+                            setScanearProduto(true);
+                        })();
+                    }}>
                         <MaterialIcons name="camera-alt" size={30} color="black" />
                     </TouchableOpacity>
                 </View>

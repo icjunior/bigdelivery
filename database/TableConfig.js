@@ -39,6 +39,9 @@ export const tableConfig = () => {
             tx.executeSql(
                 "CREATE INDEX IF NOT EXISTS idx_produto ON produto (ean);"
             );
+            tx.executeSql(
+                "CREATE INDEX IF NOT EXISTS idx_produto_venda ON produto_venda (ean);"
+            );
         },
         (error) => {
             console.warn(error);
