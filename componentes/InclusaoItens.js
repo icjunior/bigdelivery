@@ -153,9 +153,7 @@ export default function InclusaoItens({ route }) {
                         style={StyleSheet.absoluteFillObject}
                     />
                     <Button title="Fechar câmera" onPress={() => {
-                        setProduto("2012638010694");
                         setScanearProduto(false)
-
                     }} />
                     {scanned && <Button title={'Toque na tela novamente para scanear outro produto'} onPress={() => setScanned(false)} />}
                 </View>

@@ -17,10 +17,9 @@ export default function BtnCargaProduto() {
                 Promise.all([getCarga(codigoLoja), getCargaVenda(codigoLoja)])
                     .then((values) => {
                         setProcessamento(false);
-                        ToastAndroid.showWithGravity(
+                        ToastAndroid.show(
                             "Carga de produtos e preços executada com sucesso",
-                            ToastAndroid.SHORT,
-                            ToastAndroid.CENTER
+                            ToastAndroid.SHORT
                         );
                     })
                     .catch((erro) => {
